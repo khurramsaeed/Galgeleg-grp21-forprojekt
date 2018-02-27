@@ -7,7 +7,7 @@ import javax.xml.ws.Endpoint;
  * @author Khurram Saeed Malik
  */
 public class GameServer {
-    private static final String REMOTEURL = "http://[::]:9963/gameserver";
+    private static final String REMOTEURL = "http://[::]:8062/gameserver";
     
     public static void main(String[] args) {
         /*try {
