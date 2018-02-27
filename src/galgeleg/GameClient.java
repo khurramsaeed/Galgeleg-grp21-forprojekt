@@ -17,8 +17,8 @@ import javax.xml.ws.Service;
  */
 public class GameClient {
 
-    //private static final String REMOTEURL = "http://ubuntu4.saluton.dk:9963/gameserver?wsdl";
-    private static final String REMOTEURL = "serverIP?????:9963/gameserver?wsdl";
+    private static final String REMOTEURL = "http://130.225.170.246:8062/gameserver?wsdl";
+    //private static final String REMOTEURL = "serverIP?????:9963/gameserver?wsdl";
 
     public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException, IOException {
         //gameCalls = (GalgeI) Naming.lookup(REMOTEURL);
