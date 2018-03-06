@@ -16,7 +16,7 @@ import java.util.Scanner;
  */
 public class GameClient {
 
-    private static final String REMOTEURL = "rmi://localhost/rmicalls";
+    private static final String REMOTEURL = "rmi://130.225.170.246/gameCalls";
     private static GameI gameCalls;
     private static String userName, password;
 

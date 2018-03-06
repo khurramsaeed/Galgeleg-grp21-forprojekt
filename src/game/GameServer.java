@@ -10,7 +10,7 @@ import java.rmi.registry.LocateRegistry;
  * @author Khurram Saeed Malik
  */
 public class GameServer {
-    private static final String REMOTEURL = "rmi://localhost/rmicalls";
+    private static final String REMOTEURL = "rmi://130.225.170.246/gameCalls";
     
     public static void main(String[] args) throws RemoteException, MalformedURLException {
         try {
