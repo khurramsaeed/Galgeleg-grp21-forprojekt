@@ -1,69 +1,70 @@
 package galgeleg;
 
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import javax.jws.WebService;
 
 /**
  *
  * @author Khurram Saeed Malik
  */
-@WebService(endpointInterface = "galgeleg.GalgeI")
-public class GalgeInterfaceImpl implements GalgeI {
+public class GalgeInterfaceImpl extends UnicastRemoteObject implements GalgeI {
     private Galgelogik logic;
 
-    public GalgeInterfaceImpl() {
+    public GalgeInterfaceImpl() throws RemoteException {
         logic = new Galgelogik();
     }
 
     @Override
-    public ArrayList getUserWords() {
+    public ArrayList getUserWords() throws RemoteException {
         return logic.getBrugteBogstaver();
     }
 
     @Override
-    public String getVisibleWords() {
+    public String getVisibleWords() throws RemoteException {
         return logic.getSynligtOrd();
     }
 
     @Override
-    public String getWord() {
+    public String getWord() throws RemoteException {
         return logic.getOrdet();
     }
 
     @Override
-    public int getTotalWrongGuess() {
+    public int getTotalWrongGuess() throws RemoteException {
         return logic.getAntalForkerteBogstaver();
     }
 
     @Override
-    public boolean isLastGuessCorrect() {
+    public boolean isLastGuessCorrect() throws RemoteException {
         return logic.erSidsteBogstavKorrekt();
     }
 
     @Override
-    public boolean isGameWon() {
+    public boolean isGameWon() throws RemoteException {
         return logic.erSpilletVundet();
     }
 
     @Override
-    public boolean isGameLost() {
+    public boolean isGameLost() throws RemoteException {
         return logic.erSpilletTabt();
     }
 
     @Override
-    public boolean isGameOver() {
+    public boolean isGameOver() throws RemoteException {
         return logic.erSpilletSlut();
     }
 
     @Override
-    public void guessWord(String guess) {
+    public void guessWord(String guess) throws RemoteException {
         
         logic.gætBogstav(guess);
         logic.logStatus();
     }
 
     @Override
-    public void resetGame() {
+    public void resetGame() throws RemoteException {
         logic.nulstil();
     }
     

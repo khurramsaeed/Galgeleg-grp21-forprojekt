@@ -1,25 +1,22 @@
 package galgeleg;
 
 import java.util.ArrayList;
-import javax.jws.WebMethod;
-import javax.jws.WebService;
 
 /**
  *
  * @author Khurram Saeed Malik
  */
-@WebService
-public interface GalgeI {
+interface GalgeI extends java.rmi.Remote {
     //Methods that i want my server to implement and client to call
-    @WebMethod ArrayList getUserWords();
-    @WebMethod String getVisibleWords();
-    @WebMethod String getWord();
-    @WebMethod int getTotalWrongGuess();
-    @WebMethod boolean isLastGuessCorrect();
-    @WebMethod boolean isGameWon();
-    @WebMethod boolean isGameLost();
-    @WebMethod boolean isGameOver();
-    @WebMethod void guessWord(String guess);
-    @WebMethod void resetGame();
+    ArrayList getUserWords() throws java.rmi.RemoteException;
+    String getVisibleWords() throws java.rmi.RemoteException;
+    String getWord() throws java.rmi.RemoteException;
+    int getTotalWrongGuess() throws java.rmi.RemoteException;
+    boolean isLastGuessCorrect() throws java.rmi.RemoteException;
+    boolean isGameWon() throws java.rmi.RemoteException;
+    boolean isGameLost() throws java.rmi.RemoteException;
+    boolean isGameOver() throws java.rmi.RemoteException;
+    void guessWord(String guess) throws java.rmi.RemoteException;
+    void resetGame() throws java.rmi.RemoteException;
    
 }

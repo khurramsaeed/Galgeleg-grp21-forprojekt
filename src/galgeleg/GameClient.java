@@ -1,48 +1,37 @@
 package galgeleg;
 
 import brugerautorisation.data.Bruger;
-import brugerautorisation.transport.soap.Brugeradmin;
-import java.io.IOException;
+import brugerautorisation.data.Diverse;
+import brugerautorisation.transport.rmi.Brugeradmin;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
-
 /**
  *
  * @author Khurram Saeed Malik
  */
 public class GameClient {
 
-    private static final String REMOTEURL = "http://130.225.170.246:8062/gameserver?wsdl";
-    //private static final String REMOTEURL = "serverIP?????:9963/gameserver?wsdl";
+    private static final String REMOTEURL = "rmi://localhost/rmicalls";
+    private static GalgeI gameCalls;
 
-    public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException, IOException {
-        //gameCalls = (GalgeI) Naming.lookup(REMOTEURL);
+    public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
+        gameCalls = (GalgeI) Naming.lookup(REMOTEURL);
         Scanner sc = new Scanner(System.in);
-        
-        //Do your calls
-        URL url = new URL("http://javabog.dk:9901/brugeradmin?wsdl");
-        QName qname = new QName("http://soap.transport.brugerautorisation/", "BrugeradminImplService");
-        Service service = Service.create(url, qname);
-        Brugeradmin ba = service.getPort(Brugeradmin.class);
-        
-       
-        URL remoteUrl = new URL(REMOTEURL);
-        QName mqname = new QName("http://galgeleg/", "GalgeInterfaceImplService");
-        Service gameService = Service.create(remoteUrl, mqname);
-        GalgeI gameCalls = gameService.getPort(GalgeI.class);
 
         System.out.println("Indtast brugernavn: \n");
         String userName = sc.nextLine();
         System.out.println("Indtast adgangskoden: \n");
         String password = sc.nextLine();
+        Brugeradmin ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
+
+        //ba.sendGlemtAdgangskodeEmail("s123456", "Dette er en test, husk at skifte kode");
+        //ba.ændrAdgangskode(studienr, "kodeoscieq", koden);
         Bruger b = ba.hentBruger(userName, password);
         System.out.println("Fik bruger = " + b);
-        //System.out.println("Data: " + Diverse.toString(b));
+        System.out.println("Data: " + Diverse.toString(b));
         
         System.out.println("**********************************************");
         System.out.println("**                                          **");
@@ -56,7 +45,7 @@ public class GameClient {
 
     }
     
-    public static void gameStatus(GalgeI gameCalls, Scanner sc) {
+    public static void gameStatus(GalgeI gameCalls, Scanner sc) throws RemoteException {
         System.out.println("Gæt følgende ord: " + gameCalls.getVisibleWords());
             System.out.println("Du har nu brugt: " + gameCalls.getUserWords());
             System.out.println("Forkert gæt: " + gameCalls.getTotalWrongGuess());
