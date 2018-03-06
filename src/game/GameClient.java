@@ -15,7 +15,9 @@ import java.util.Scanner;
  * @author Khurram Saeed Malik
  */
 public class GameClient {
+    // java -Djava.rmi.server.hostname=130.225.170.246 -cp Galgeleg-grp21.jar game.GameServer
 
+    //private static final String REMOTEURL = "rmi://localhost/gameCalls";
     private static final String REMOTEURL = "rmi://130.225.170.246/gameCalls";
     private static GameI gameCalls;
     private static String userName, password;
@@ -36,9 +38,11 @@ public class GameClient {
         Bruger user = userAdmin.hentBruger(userName, password);
         System.out.println("Fik bruger = " + user);
         System.out.println("Data: " + Diverse.toString(user));
-        GalgeI galgeI = new GalgeImpl();
        
-        gameCalls.registerPlayer(userName, galgeI);
+        System.out.println("HEJ");
+        gameCalls.registerPlayer(userName);
+        
+        GalgeI galgeI = gameCalls.findGame(userName);
         
         //galgeI = gameCalls.findGame(userName);
      
