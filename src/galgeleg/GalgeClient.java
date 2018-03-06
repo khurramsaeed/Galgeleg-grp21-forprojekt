@@ -3,6 +3,7 @@ package galgeleg;
 import brugerautorisation.data.Bruger;
 import brugerautorisation.data.Diverse;
 import brugerautorisation.transport.rmi.Brugeradmin;
+import galgeleg.GalgeI;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -12,7 +13,8 @@ import java.util.Scanner;
  *
  * @author Khurram Saeed Malik
  */
-public class GameClient {
+@Deprecated
+public class GalgeClient {
 
     private static final String REMOTEURL = "rmi://localhost/rmicalls";
     private static GalgeI gameCalls;
@@ -27,8 +29,6 @@ public class GameClient {
         String password = sc.nextLine();
         Brugeradmin ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
 
-        //ba.sendGlemtAdgangskodeEmail("s123456", "Dette er en test, husk at skifte kode");
-        //ba.ændrAdgangskode(studienr, "kodeoscieq", koden);
         Bruger b = ba.hentBruger(userName, password);
         System.out.println("Fik bruger = " + b);
         System.out.println("Data: " + Diverse.toString(b));
