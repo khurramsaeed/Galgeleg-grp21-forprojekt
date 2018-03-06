@@ -1,6 +1,7 @@
 package game;
 
 import galgeleg.GalgeI;
+import galgeleg.GalgeImpl;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -26,13 +27,13 @@ public class GameImpl extends UnicastRemoteObject implements GameI {
     }
 
     @Override
-    public void registerPlayer(String name, GalgeI galge) throws RemoteException {
+    public void registerPlayer(String name) throws RemoteException {
         if(game.containsKey(name)) {
-            System.out.println("Player with " + name + " already exists");
-            // what to do
+            throw new IllegalArgumentException("Player with " + name + " already exists");
         } else {
-       System.out.println("Registered player: " + name + " " + galge);
-        game.put(name, galge);} 
+            System.out.println("Registered player: " + name);
+            game.put(name,  new GalgeImpl());
+        } 
     }
     
 }
