@@ -18,31 +18,35 @@ public class GameClient {
 
     private static final String REMOTEURL = "rmi://localhost/rmicalls";
     private static GameI gameCalls;
-    private static String userName;
+    private static String userName, password;
 
     public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
         gameCalls = (GameI) Naming.lookup(REMOTEURL);
         Scanner sc = new Scanner(System.in);
         System.out.println("\n\n--- Command line client ---\n\n");
         
+        // Read user details
         System.out.println("Indtast brugernavn: \n");
         userName = sc.nextLine();
         System.out.println("Indtast adgangskoden: \n");
-        String password = sc.nextLine();
-        Brugeradmin ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
+        password = sc.nextLine();
+        
+        Brugeradmin userAdmin = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
 
-        Bruger b = ba.hentBruger(userName, password);
-        System.out.println("Fik bruger = " + b);
-        System.out.println("Data: " + Diverse.toString(b));
+        Bruger user = userAdmin.hentBruger(userName, password);
+        System.out.println("Fik bruger = " + user);
+        System.out.println("Data: " + Diverse.toString(user));
+        GalgeI galgeI = new GalgeImpl();
+       
+        gameCalls.registerPlayer(userName, galgeI);
         
-        gameCalls.registerPlayer(userName, new GalgeImpl());
-        
+        //galgeI = gameCalls.findGame(userName);
+     
         System.out.println("**********************************************");
         System.out.println("**                                          **");
         System.out.println("**              Spil Startede               **");
         System.out.println("**                                          **");
         System.out.println("**********************************************\n");
-         GalgeI galgeI = new GalgeImpl();
         while (true) {
             gameStatus(galgeI, sc);
         }
@@ -50,7 +54,6 @@ public class GameClient {
     }
     
     public static void gameStatus(GalgeI galgeI, Scanner sc) throws RemoteException {
-        galgeI = gameCalls.findPlayer(userName);
         System.out.println("Gæt følgende ord: " + galgeI.getVisibleWords());
             System.out.println("Du har nu brugt: " + galgeI.getUserWords());
             System.out.println("Forkert gæt: " + galgeI.getTotalWrongGuess());
@@ -77,13 +80,16 @@ public class GameClient {
                 String guess = sc.nextLine();
                 galgeI.guessWord(guess);
             } else {
-                galgeI.resetGame();
                 System.out.println("**********************************************");
                 System.out.println("**                                          **");
                 System.out.println("**              Spil Afsluttede             **");
                 System.out.println("**            Du har tabt spillet           **");
+                System.out.println("**        Ordet var "+ galgeI.getWord() +"  **");
                 System.out.println("**                                          **");
                 System.out.println("**********************************************\n");
+                // Ønsker du at starte nyt eller luk?
+                galgeI.resetGame();
+                
                 return;
             }
     }
