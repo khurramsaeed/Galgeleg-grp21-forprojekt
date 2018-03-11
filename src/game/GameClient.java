@@ -10,6 +10,8 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Khurram Saeed Malik
@@ -23,24 +25,15 @@ public class GameClient {
     private static String userName, password;
 
     public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
-        gameCalls = (GameI) Naming.lookup(REMOTEURL);
-        Scanner sc = new Scanner(System.in);
+        gameCalls = (GameI) Naming.lookup(REMOTEURL);     
         System.out.println("\n\n--- Command line client ---\n\n");
-        
-        // Read user details
-        System.out.println("Indtast brugernavn: \n");
-        userName = sc.nextLine();
-        System.out.println("Indtast adgangskoden: \n");
-        password = sc.nextLine();
-        
-        Brugeradmin userAdmin = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
-
-        Bruger user = userAdmin.hentBruger(userName, password);
-        System.out.println("Fik bruger = " + user);
-        System.out.println("Data: " + Diverse.toString(user));
-       
+        Scanner sc = new Scanner(System.in);
+        login();
         System.out.println("HEJ");
+        try{
         gameCalls.registerPlayer(userName);
+        } catch (IllegalArgumentException alreadyRegistred) {
+            System.out.println("Velkommen tilbage " + userName);}
         
         GalgeI galgeI = gameCalls.findGame(userName);
         
@@ -56,7 +49,29 @@ public class GameClient {
         }
 
     }
+    public static void login() throws RemoteException, NotBoundException{
+        Bruger user;
+        Scanner sc = new Scanner(System.in);
+     // Read user details
+        System.out.println("Indtast brugernavn: \n");
+        userName = sc.nextLine();
+        System.out.println("Indtast adgangskoden: \n");
+        password = sc.nextLine();
+        
+        try{
+        Brugeradmin userAdmin = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
+        user = userAdmin.hentBruger(userName, password);
+        
+        System.out.println("Fik bruger = " + user);
+        System.out.println("Data: " + Diverse.toString(user));
+        } catch (IllegalArgumentException loginFejl) {
+            System.out.println("loginfejl " + loginFejl.getMessage());
+            login();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     
+    }
     public static void gameStatus(GalgeI galgeI, Scanner sc) throws RemoteException {
         System.out.println("Gæt følgende ord: " + galgeI.getVisibleWords());
             System.out.println("Du har nu brugt: " + galgeI.getUserWords());
