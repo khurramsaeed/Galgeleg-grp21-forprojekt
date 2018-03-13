@@ -49,7 +49,6 @@ public class BenytBrugerdatabase {
 		System.out.println("\nDer er "+db.brugere.size()+" brugere i databasen");
 
 		brugerautorisation.transport.rmi.Brugeradminserver.main(null);
-		brugerautorisation.transport.soap.Brugeradminserver.main(null);
 
 		while (true) try {
 			System.out.println();
